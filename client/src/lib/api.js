@@ -1,4 +1,6 @@
-const BASE = '';
+// VITE_API_URL allows separate frontend/backend deploys (e.g. Vercel frontend + Render backend)
+// Leave empty for same-origin (Vercel serverless or local Express serving static)
+const BASE = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : '';
 
 function getToken() {
   return localStorage.getItem('life_rpg_token');
