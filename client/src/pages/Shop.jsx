@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api.js';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coins, ShoppingBag, Check, Crown, Sparkles } from 'lucide-react';
+import { Coins, ShoppingBag, Check } from 'lucide-react';
 
 const rarityStyle = {
   common: 'rarity-common',
@@ -30,7 +30,7 @@ export default function Shop() {
       const res = await api.buyItem(id);
       setCharacter(res.character);
       setItems(it=> it.map(x=> x.id===id ? {...x, owned:true} : x));
-      setToast({ msg: `Acquired ${res.item.name}!`, type:'success' });
+      setToast({ msg: `Bought ${res.item.name}!`, type:'success' });
       setTimeout(()=>setToast(null), 2500);
     } catch(e){ setToast({msg:e.message, type:'error'}); setTimeout(()=>setToast(null), 2500); }
     finally { setBuying(null); }
@@ -45,12 +45,12 @@ export default function Shop() {
     <div>
       <div className="flex flex-col sm:flex-row gap-4 sm:items-end justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl flex items-center gap-2"><ShoppingBag className="w-6 h-6 text-ember-400" /> Armory</h1>
-          <p className="text-sm text-zinc-500">Spend your hard-earned gold. Purchases are permanent and secured server-side.</p>
+          <h1 className="font-semibold text-2xl flex items-center gap-2"><ShoppingBag className="w-6 h-6 text-ember-400" /> Shop</h1>
+          <p className="text-sm text-zinc-500">Spend your gold on items. Purchases are saved to your account.</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-obsidian-900 font-black flex items-center gap-2 shadow-lg"><Coins className="w-4 h-4" /> {character.gold} GOLD</div>
-          <div className="hidden sm:flex items-center gap-1 text-xs font-mono text-zinc-500"><Crown className="w-3 h-3" /> {items.filter(i=>i.owned).length}/{items.length} owned</div>
+          <div className="hidden sm:flex items-center gap-1 text-xs text-zinc-500">{items.filter(i=>i.owned).length}/{items.length} owned</div>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export default function Shop() {
                 <span className="px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center gap-1"><Check className="w-4 h-4" /> Owned</span>
               ) : (
                 <motion.button whileTap={{scale:0.97}} disabled={buying===item.id || character.gold < item.price} onClick={()=>buy(item.id)} className="px-5 py-2 rounded-full bg-white text-obsidian-900 font-bold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-100 flex items-center gap-1">
-                  {buying===item.id ? <span className="w-4 h-4 border-2 border-obsidian-900/20 border-t-obsidian-900 rounded-full animate-spin" /> : character.gold < item.price ? 'Need gold' : 'Acquire'}
+                  {buying===item.id ? <span className="w-4 h-4 border-2 border-obsidian-900/20 border-t-obsidian-900 rounded-full animate-spin" /> : character.gold < item.price ? 'Not enough gold' : 'Buy'}
                 </motion.button>
               )}
             </div>
@@ -85,12 +85,12 @@ export default function Shop() {
       </div>
 
       <div className="mt-6 rounded-2xl border border-white/5 bg-obsidian-800/50 p-4 flex items-center gap-3">
-        <Sparkles className="w-5 h-5 text-ember-400" />
-        <p className="text-sm text-zinc-400">Gold is earned only via quest completion (server-authoritative). No cheating — your legend is real.</p>
+        <Coins className="w-5 h-5 text-ember-400" />
+        <p className="text-sm text-zinc-400">Gold comes from completing tasks — it cannot be bought or faked.</p>
       </div>
 
       <AnimatePresence>
-        {toast && <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} exit={{y:20, opacity:0}} className={`fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-3 rounded-full border shadow-xl text-sm font-medium flex items-center gap-2 ${toast.type==='error' ? 'bg-red-500 text-white border-red-600' : 'bg-white text-obsidian-900'}`}>{toast.type==='error'?'⚠️':'✨'} {toast.msg}</motion.div>}
+        {toast && <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} exit={{y:20, opacity:0}} className={`fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-3 rounded-full border shadow-xl text-sm font-medium flex items-center gap-2 ${toast.type==='error' ? 'bg-red-500 text-white border-red-600' : 'bg-white text-obsidian-900'}`}>{toast.msg}</motion.div>}
       </AnimatePresence>
     </div>
   );

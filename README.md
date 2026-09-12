@@ -1,8 +1,8 @@
-# Life RPG — Forge Your Legend ⚔️
+# Life RPG ⚔️
 
-> Turn mundane habits into epic quests. Earn XP, keep streaks, level attributes, and spend gold in the Armory.
+> Turn habits into tasks. Earn XP, keep streaks, level attributes, and spend gold in the Shop.
 
-A full-stack, **thematically cohesive dark-fantasy** Life RPG that bridges the delayed-gratification gap of traditional productivity tools. Every checkmark is **tactile, celebratory, and server-authoritative** — no cheating your stats.
+A full-stack, dark-themed Life RPG that bridges the delayed-gratification gap of traditional productivity tools. Every checkmark is **instant, satisfying, and server-authoritative** — no cheating your stats.
 
 ![Life RPG Preview](https://img.shields.io/badge/Stack-React%20%2B%20Express%20%2B%20SQLite-dark?style=for-the-badge)
 ![Auth](https://img.shields.io/badge/Auth-JWT%20%2B%20bcrypt-blue)
@@ -12,8 +12,8 @@ A full-stack, **thematically cohesive dark-fantasy** Life RPG that bridges the d
 
 ## ✨ Product Feel
 
-- **Alive & Tactile** — spring animations (Framer Motion), XP shimmer bars, gold-coin pops, confetti on complete, level-up ascension modal with particles. Optimistic UI + loading skeletons so it feels native.
-- **Thematically Cohesive** — obsidian/ember/gold palette, Cinzel display type, sigil icons (⚔️ Strength, 📖 Intellect, 🌿 Vitality, 💬 Charisma, 🎯 Discipline), rarity glows, parchment textures.
+- **Alive & Tactile** — spring animations (Framer Motion), XP shimmer bar, animated attribute bars, level-up modal with particles, animated toasts. Loading skeletons so it feels native.
+- **Clean & Consistent** — dark obsidian/ember palette, a single accent colour, plain labels (Tasks / Shop / History), category icons (⚔️ Strength, 📖 Intellect, 🌿 Vitality, 💬 Charisma, 🎯 Discipline), rarity glows in the Shop.
 - **Seamlessly Integrated** — Vite proxy + Express API, skeletons, `backdrop-blur` glass, transitions. Refresh proves DB persistence.
 
 ## 🧩 Core Systems (Checklist)
@@ -21,11 +21,11 @@ A full-stack, **thematically cohesive dark-fantasy** Life RPG that bridges the d
 | Requirement | Implementation |
 |---|---|
 | **Auth & Security** | JWT (7d) + bcryptjs hashing, `Authorization: Bearer` middleware, users only see own data. SQL-injection safe via prepared statements. |
-| **Database & CRUD** | **SQLite (node:sqlite built-in)** with WAL. Tables: `users`, `characters`, `tasks`, `shop_items`, `inventory`, `history`. Full CRUD for quests. |
+| **Database & CRUD** | **SQLite (node:sqlite built-in)** with WAL. Tables: `users`, `characters`, `tasks`, `shop_items`, `inventory`, `history`. Full CRUD for tasks. |
 | **RPG Progression** | **Non-linear** `xpForNext = floor(100 * level^1.6)` — Level 1→2 needs 100, Level 5→6 needs 100*5^1.6≈  ~ 1310. Server is source of truth. |
-| **Streaks** | `last_active_date` + `streak`/`longest_streak`. Increments if yesterday was active, resets after miss, holds if multiple quests same day. |
-| **Attributes** | 5 stats (Strength/Intellect/Vitality/Charisma/Discipline). Each quest tags one. +1 per completion, shown as animated bars. |
-| **Economy** | Gold rewards by difficulty (12/28/55/110) + level-up bonus (50×level). **Armory** shop: 10 items (common→legendary), ownership persisted, no duplicate buys. |
+| **Streaks** | `last_active_date` + `streak`/`longest_streak`. Increments if yesterday was active, resets after miss, holds if multiple tasks same day. |
+| **Attributes** | 5 stats (Strength/Intellect/Vitality/Charisma/Discipline). Each task tags one. +1 per completion, shown as animated bars. |
+| **Economy** | Gold rewards by difficulty (12/28/55/110) + level-up bonus (50×level). **Shop**: 10 items (common→legendary), ownership persisted, no duplicate buys. |
 | **Responsive & Accessible** | Mobile-first, 360px → 1280px. Keyboard: Tab/Enter/Space all interactive. `focus-visible` rings, `aria-label`s, semantic HTML, screen-reader labels. |
 
 ### Difficulty → Rewards
@@ -118,13 +118,13 @@ All `/api/*` except `/auth/*` require `Authorization: Bearer <token>`.
 | GET | `/api/auth/me` | current user |
 | GET | `/api/tasks` | list own tasks |
 | POST | `/api/tasks` | create {title,description,attribute,difficulty} |
-| PUT | `/api/tasks/:id` | update pending quest |
-| DELETE | `/api/tasks/:id` | delete quest |
+| PUT | `/api/tasks/:id` | update a pending task |
+| DELETE | `/api/tasks/:id` | delete a task |
 | POST | `/api/tasks/:id/complete` | **server-authoritative** — awards XP/Gold, levels, streak, attr, history |
 | GET | `/api/character` | {character,nextXp,xpProgress,inventory} |
 | GET | `/api/shop` | items + owned flag |
 | POST | `/api/shop/buy/:id` | spend gold, acquire item |
-| GET | `/api/history` | sealed quests log + stats |
+| GET | `/api/history` | completed-task log + stats |
 | GET | `/api/health` | ok |
 
 **Validation:** title 1-100 chars, description ≤500, attribute ∈ {strength,…}, difficulty ∈ {easy,medium,hard,epic}. Empty titles rejected 400.
@@ -133,30 +133,30 @@ All `/api/*` except `/auth/*` require `Authorization: Bearer <token>`.
 
 ## 🎮 User Flow (Illustration Video Script - 120s)
 
-1. **0-20s** Signup (`hero@realm.io`) → lands on Dashboard, sees Level 1, 0% XP, 50 Gold.
-2. **20-50s** **Forge Quest:** “Morning Run” (Vitality, Hard) → appears with +110 XP badge. Edit to “Morning Run 5k” → save.
-3. **50-90s** **Complete** → confetti, +110 XP toast, gold +55, vitality 1→2, XP bar animates. Create + complete “Read 30 pages” (Intellect, Medium) → **Level Up!** modal (crown, particles) → Level 2, bonus gold.
-4. **90-110s** **Armory** → buy “Scholar Laurels” badge for 120 G → owned check. Gold deducts.
-5. **110-120s** **Refresh** (Ctrl+R) → still Level 2, quests persisted, Chronicles shows 2 sealed entries. Streak =1, Best =1.
+1. **0-20s** Signup (`jane@example.com`) → lands on Dashboard, sees Level 1, 0% XP, 50 Gold.
+2. **20-50s** **New Task:** “Morning Run” (Vitality, Hard) → appears with +110 XP badge. Edit to “Morning Run 5k” → save.
+3. **50-90s** **Complete** → +110 XP toast, gold +55, vitality 1→2, XP bar animates. Create + complete “Read 30 pages” (Intellect, Medium) → **Level Up** modal (particles) → Level 2, bonus gold.
+4. **90-110s** **Shop** → buy “Scholar Laurels” badge for 120 G → owned check. Gold deducts.
+5. **110-120s** **Refresh** (Ctrl+R) → still Level 2, tasks persisted, History shows 2 completed entries. Streak =1, Best =1.
 
 Record with OBS, <100MB, 90–180s.
 
 ---
 
-## 🎨 Theming & UX Details
+## 🎨 UI & UX Details
 
-- **Typography:** `Cinzel` (display) + `Space Grotesk` (body) + `JetBrains Mono` (stats)
+- **Typography:** `Space Grotesk` (UI) + `JetBrains Mono` (stats)
 - **Motion:** `framer-motion` `layout`, `whileHover`, `AnimatePresence` for list, modals, toasts. XP bar spring 80.
-- **Empty/Edge States:** dashed no-quests card, “Not enough gold” disabled, duplicate purchase blocked, delete confirm, offline `catch` → red toast.
-- **Accessibility:** `focus-visible` amber ring, keyboard nav, `aria-label` on icon buttons, logical heading hierarchy, color contrast ≥4.5:1.
-- **SEO:** semantic HTML, meta description, responsive viewport, fast Vite build (106kB gz).
+- **Empty/Edge States:** dashed no-tasks card, “Not enough gold” disabled, duplicate purchase blocked, delete confirm, offline `catch` → red toast.
+- **Accessibility:** `focus-visible` ember ring, labelled inputs (`htmlFor`/`id`), keyboard nav, `aria-label` on icon buttons, logical heading hierarchy, color contrast ≥4.5:1.
+- **SEO:** semantic HTML, meta description, responsive viewport, fast Vite build (~104kB gz).
 
 ---
 
 ## 🛡️ Robustness
 
 - Backend validates all input; **level/XP math never trusts client**.
-- Completed quests are “sealed” — cannot be edited/undone to farm XP.
+- Completed tasks cannot be edited or undone, so XP cannot be farmed.
 - JWT expiry handled (401 → logout).
 - Network errors show toasts, not silent fails.
 - Transactions (`BEGIN/COMMIT/ROLLBACK`) for complete & purchase.
@@ -185,17 +185,17 @@ services:
 
 ## 📸 Screenshots
 
-- Dashboard with CharacterPanel + Quest Log
-- Level Up ascension modal
-- Armory rarity cards
-- Chronicles history
+- Tasks dashboard (character panel + task list)
+- Level Up modal
+- Shop rarity cards
+- History log
 
 ---
 
 ## 📄 License
 
-MIT — do what you want, just keep the legend alive.
+MIT — do what you want, just keep the streak alive.
 
 ---
 
-*Built with ❤️ for dreamers who ship. Small quests, stacked daily, forge legends.*
+*Built with ❤️ for dreamers who ship. Small tasks, stacked daily.*
