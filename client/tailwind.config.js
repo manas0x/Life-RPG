@@ -17,9 +17,14 @@ export default {
           400: '#ffb86a',
           500: '#ff8c42',
           600: '#e76f51',
+        },
+        rune: {
+          gold: '#d4a574',
+          muted: '#8b7355'
         }
       },
       fontFamily: {
+        display: ['Cinzel', 'serif'],
         body: ['Space Grotesk', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace']
       },

@@ -27,8 +27,8 @@ export default function App() {
         <Routes>
           <Route path="/auth" element={<PublicAuth />} />
           <Route path="/" element={<Protected><Dashboard /></Protected>} />
-          <Route path="/shop" element={<Protected><Shop /></Protected>} />
-          <Route path="/history" element={<Protected><History /></Protected>} />
+          <Route path="/armory" element={<Protected><Shop /></Protected>} />
+          <Route path="/chronicles" element={<Protected><History /></Protected>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

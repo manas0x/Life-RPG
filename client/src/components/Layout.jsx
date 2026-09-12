@@ -1,13 +1,13 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
-import { ListChecks, Store, History, LogOut, Menu, X } from 'lucide-react';
+import { Sword, Scroll, Store, History, LogOut, Menu, X, Shield, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 const nav = [
-  { to: '/', label: 'Tasks', icon: ListChecks },
-  { to: '/shop', label: 'Shop', icon: Store },
-  { to: '/history', label: 'History', icon: History },
+  { to: '/', label: 'Quests', icon: Scroll },
+  { to: '/armory', label: 'Armory', icon: Store },
+  { to: '/chronicles', label: 'Chronicles', icon: History },
 ];
 
 export default function Layout({ children }) {
@@ -23,10 +23,14 @@ export default function Layout({ children }) {
       <header className="sticky top-0 z-40 glass border-b border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 h-[64px] flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-ember-500 flex items-center justify-center">
-              <ListChecks className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-ember-500 to-amber-600 flex items-center justify-center shadow-lg shadow-ember-500/20">
+              <Sword className="w-5 h-5 text-white" />
             </div>
-            <h1 className="font-semibold tracking-tight text-[17px]">Life RPG</h1>
+            <div>
+              <h1 className="font-display font-extrabold tracking-wide text-[18px] leading-none">LIFE RPG</h1>
+              <p className="text-[11px] tracking-[0.18em] text-rune-gold font-mono -mt-0.5">FORGE YOUR LEGEND</p>
+            </div>
+            <span className="hidden lg:inline-flex ml-3 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] font-mono tracking-widest text-zinc-400">v1.0 • ASCENSION</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-obsidian-800 border border-white/5">
@@ -40,7 +44,7 @@ export default function Layout({ children }) {
           <div className="flex items-center gap-2">
             {user && (
               <div className="hidden sm:flex items-center gap-3 pl-3 pr-1 py-1 rounded-full bg-obsidian-800 border border-white/10">
-                <div className="w-7 h-7 rounded-full bg-obsidian-600 flex items-center justify-center text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-xs font-bold">
                   {user.username[0]?.toUpperCase()}
                 </div>
                 <span className="text-sm font-medium pr-2 max-w-[120px] truncate">{user.username}</span>
@@ -62,7 +66,7 @@ export default function Layout({ children }) {
                 <item.icon className="w-5 h-5" /> {item.label}
               </NavLink>
             ))}
-            {user && <button onClick={handleLogout} className="px-4 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 text-sm">Log out</button>}
+            {user && <button onClick={handleLogout} className="px-4 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 text-sm">Logout</button>}
           </motion.div>
         )}
       </header>
@@ -71,8 +75,10 @@ export default function Layout({ children }) {
         {children}
       </main>
 
-      <footer className="border-t border-white/[0.04] py-4 text-center text-xs text-zinc-500">
-        Life RPG — your progress is saved to your account.
+      <footer className="border-t border-white/[0.04] py-4 text-center text-xs font-mono tracking-widest text-zinc-500">
+        <div className="flex items-center justify-center gap-2">
+          <Shield className="w-3.5 h-3.5" /> LIFE RPG • PROGRESS IS SACRED • <Sparkles className="w-3.5 h-3.5" />
+        </div>
       </footer>
     </div>
   );
