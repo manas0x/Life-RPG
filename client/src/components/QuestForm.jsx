@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 
 const attributes = [
-  { id:'strength', label:'Strength', icon:'⚔️', desc:'Body' },
-  { id:'intellect', label:'Intellect', icon:'📖', desc:'Study' },
-  { id:'vitality', label:'Vitality', icon:'🌿', desc:'Health' },
-  { id:'charisma', label:'Charisma', icon:'💬', desc:'Social' },
-  { id:'discipline', label:'Discipline', icon:'🎯', desc:'Focus' },
+  { id:'strength', label:'Strength', icon:'⚔️', desc:'Body & Power' },
+  { id:'intellect', label:'Intellect', icon:'📖', desc:'Mind & Study' },
+  { id:'vitality', label:'Vitality', icon:'🌿', desc:'Health & Energy' },
+  { id:'charisma', label:'Charisma', icon:'💬', desc:'Social & Heart' },
+  { id:'discipline', label:'Discipline', icon:'🎯', desc:'Focus & Will' },
 ];
 const difficulties = [
   { id:'easy', label:'Easy', xp:25, gold:12, color:'emerald' },
@@ -36,7 +36,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) { setError('Title is required'); return; }
+    if (!title.trim()) { setError('Quest title is required'); return; }
     if (title.trim().length > 100) { setError('Title too long'); return; }
     onSubmit({ title: title.trim(), description: description.trim(), attribute, difficulty });
   };
@@ -53,8 +53,8 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
         >
           <div className="sticky top-0 bg-obsidian-800 p-5 sm:p-6 border-b border-white/5 flex items-start justify-between gap-4">
             <div>
-              <h2 className="font-semibold text-lg">{initial ? 'Edit task' : 'New task'}</h2>
-              <p className="text-sm text-zinc-500">Add a title, then pick a category and difficulty.</p>
+              <h2 className="font-display font-bold text-lg flex items-center gap-2"><Sparkles className="w-5 h-5 text-ember-400" /> {initial ? 'Edit Quest' : 'New Quest'}</h2>
+              <p className="text-sm text-zinc-500">Forge a task into destiny. Choose its sigil and weight.</p>
             </div>
             <button type="button" onClick={onClose} aria-label="Close" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center"><X className="w-4 h-4" /></button>
           </div>
@@ -63,7 +63,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
             {error && <div className="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>}
 
             <div>
-              <label className="text-xs font-medium text-zinc-400 mb-1.5 block">Title</label>
+              <label className="text-xs font-mono tracking-widest text-zinc-500 mb-1.5 block">QUEST TITLE *</label>
               <input
                 autoFocus
                 value={title}
@@ -76,7 +76,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium text-zinc-400 mb-1.5 block">Description (optional)</label>
+              <label className="text-xs font-mono tracking-widest text-zinc-500 mb-1.5 block">DESCRIPTION (OPTIONAL)</label>
               <textarea
                 value={description}
                 onChange={e=>setDescription(e.target.value)}
@@ -88,7 +88,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium text-zinc-400 mb-2 block">Category</label>
+              <label className="text-xs font-mono tracking-widest text-zinc-500 mb-2 block">ATTRIBUTE SIGIL</label>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                 {attributes.map(a=>(
                   <button key={a.id} type="button" onClick={()=>setAttribute(a.id)} className={`p-3 rounded-xl border text-center transition ${attribute===a.id ? 'bg-white text-obsidian-900 border-white shadow-lg scale-[1.02]' : 'bg-obsidian-900 border-white/10 hover:border-white/20 text-zinc-400 hover:text-white'}`}>
@@ -101,7 +101,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium text-zinc-400 mb-2 block">Difficulty</label>
+              <label className="text-xs font-mono tracking-widest text-zinc-500 mb-2 block">DIFFICULTY (REWARD)</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {difficulties.map(d=>(
                   <button key={d.id} type="button" onClick={()=>setDifficulty(d.id)} className={`p-3 rounded-xl border text-left transition ${difficulty===d.id ? 'bg-gradient-to-br from-ember-500 to-amber-500 border-ember-500 text-obsidian-900 shadow' : 'bg-obsidian-900 border-white/10 hover:border-white/20'}`}>
@@ -116,7 +116,7 @@ export default function QuestForm({ open, onClose, onSubmit, initial }) {
           <div className="sticky bottom-0 p-4 sm:p-5 bg-obsidian-800 border-t border-white/5 flex gap-3">
             <button type="button" onClick={onClose} className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 font-medium text-sm">Cancel</button>
             <button type="submit" className="flex-1 py-3 rounded-xl bg-gradient-to-r from-ember-500 to-amber-500 hover:from-ember-600 hover:to-amber-600 text-obsidian-900 font-bold text-sm shadow-lg">
-              {initial ? 'Save changes' : 'Add task'}
+              {initial ? 'Save Changes' : 'Forge Quest'}
             </button>
           </div>
         </motion.form>
