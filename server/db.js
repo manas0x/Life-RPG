@@ -6,7 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.join(__dirname, 'data.db');
+// Vercel's filesystem is read-only except /tmp — use /tmp/data.db there, local server/data.db otherwise
+const isVercel = !!process.env.VERCEL;
+const dbPath = isVercel ? path.join('/tmp', 'data.db') : path.join(__dirname, 'data.db');
 let db;
 
 export function getDB() {
@@ -43,7 +45,7 @@ export function initDB() {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   
   db = new DatabaseSync(dbPath);
-  // Enable WAL and foreign keys
+  // Enable WAL and foreign keys (WAL may fail on /tmp, ignore)
   try { db.exec('PRAGMA journal_mode = WAL'); } catch {}
   try { db.exec('PRAGMA foreign_keys = ON'); } catch {}
 
