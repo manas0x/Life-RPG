@@ -156,7 +156,7 @@ router.post('/:id/uncomplete', (req, res) => {
   if (!task) return res.status(404).json({ error: 'Task not found' });
   if (!task.completed) return res.status(400).json({ error: 'Task not completed' });
   // For now, disallow to prevent cheating xp
-  return res.status(400).json({ error: 'Completed quests are sealed in the chronicles. Cannot undo.' });
+  return res.status(400).json({ error: 'Completed tasks cannot be undone.' });
 });
 
 export default router;

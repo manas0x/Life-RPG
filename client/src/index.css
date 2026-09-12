@@ -7,19 +7,16 @@
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d4a574 #14141e;
+  scrollbar-color: #2a2a3e #14141e;
 }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #14141e; }
 ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: #d4a574; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a4e; }
 
 body {
   @apply bg-obsidian-900 text-zinc-100 font-body antialiased;
-  background-image:
-    radial-gradient(ellipse at top, rgba(255,140,66,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(120,90,255,0.06) 0%, transparent 50%),
-    linear-gradient(to bottom, #0a0a0f, #0f0f17);
+  background-image: linear-gradient(to bottom, #0a0a0f, #0f0f17);
   min-height: 100vh;
 }
 
@@ -42,7 +39,7 @@ body {
   background-size: 200% 100%;
 }
 
-/* Custom prose for quest card */
+/* Rarity treatments for shop items */
 .rarity-common { border-color: rgba(255,255,255,0.08); }
 .rarity-rare { border-color: rgba(96,165,250,0.4); box-shadow: 0 0 20px rgba(96,165,250,0.08); }
 .rarity-epic { border-color: rgba(192,132,252,0.5); box-shadow: 0 0 24px rgba(192,132,252,0.12); }
